@@ -21,9 +21,7 @@ public class Client : EntityBase
     //konstruktor
     public Client(int clientID, string name, string surname, string phoneNumber)
     {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(clientID);
-        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("Name cannot be null or empty");
-        if (string.IsNullOrWhiteSpace(surname)) throw new ArgumentNullException("Surname cannot be null or empty");
+        ValidateClientData(clientID, name, surname);
 
         ClientID = clientID;
         Name = name;
@@ -33,6 +31,22 @@ public class Client : EntityBase
     }
     protected Client() { }
     //addCar deleteCar updateCar walidacja dla metod
+
+    private static void ValidateClientData(int clientID, string name, string surname)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(clientID);
+        
+        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("Name cannot be null or empty", nameof(name));
+        
+        if (string.IsNullOrWhiteSpace(surname)) throw new ArgumentNullException("Surname cannot be null or empty", nameof(surname));
+    }
+
+    public void AddCar(string model, string make, int year, string vin)
+    {
+        var carId = _cars.Any() ? _cars.Max(c => c.CarId) + 1 : 1;
+        AddCar(carId, model, make, year, vin);
+    }
+
     public void AddCar(int carID, string model, string make, int year, string vin)
     {
         var carToAdd = _cars.FirstOrDefault(car => car.CarId == carID);
@@ -44,42 +58,47 @@ public class Client : EntityBase
 
     public void UpdateCar(int carID, string newMake, string newModel, int newYear)
     {
-        var carToUpdate = _cars.FirstOrDefault(car => car.CarId == carID);
-        if (carToUpdate == null) throw new ArgumentNullException($"There is no car with this ID: {carID} ");
-
+        var carToUpdate = GetCarById(carID);
         carToUpdate.updateCar(newMake, newModel, newYear);
     }
 
     public void RemoveCar(int carID)
     {
-        var carToRemove = _cars.FirstOrDefault(car => car.CarId == carID);
-        if (carToRemove == null) throw new ArgumentNullException($"There is no car with this ID: {carID} ");
-        
+        Car carToRemove = GetCarById(carID);        
         _cars.Remove(carToRemove);
         
     }
     //usluga zrobiona na aucie (historia) (zmiana wlasicicela)
+
+    public void AddService(int carID, string serviceName, string serviceDescription, int price)
+    {
+        var serviceId = _services.Any() ? _services.Max(s => s.ServiceId) + 1 : 1;
+        AddService(carID, serviceId, serviceName, serviceDescription, price);
+    }
+
     public void AddService(int carID, int serviceID, string serviceName, string serviceDescription, int price)
     {
-        var carToService = _cars.FirstOrDefault(car => car.CarId == carID);
-        var addedService = _services.FirstOrDefault(service => service.ServiceId == serviceID);
-        if (carToService == null) throw new ArgumentNullException($"There is no car with this ID: {carID} ");
-        
-        if (addedService != null) throw new ArgumentException($"There already exists service with this ID: {serviceID}");
-        
-        Service newService = new Service(serviceID, serviceName, serviceDescription, price);
-        _services.Add(newService);
+        var car = GetCarById(carID);
 
-        carToService.IncrementVisits();
+        if (_services.Any(s => s.ServiceId == serviceID))
+            throw new InvalidOperationException($"Service with ID {serviceID} already exists");
+
+        var newService = new Service(serviceID, serviceName, serviceDescription, price);
+        _services.Add(newService);
+        car.IncrementVisits();
     }
 
     public Car TransferCarOwnership(int carID)
     {
-        var carToTransfer = _cars.FirstOrDefault(car => car.CarId == carID);
-        if (carToTransfer == null) throw new ArgumentNullException($"There is no car with this ID: {carID} ");
-
+        var carToTransfer = GetCarById(carID);
         _cars.Remove(carToTransfer);
         return carToTransfer;
+    }
+
+    private Car GetCarById(int carID)
+    {
+        return _cars.FirstOrDefault(c => c.CarId == carID)
+            ?? throw new ArgumentException($"Car with ID {carID} not found", nameof(carID));
     }
 
     
