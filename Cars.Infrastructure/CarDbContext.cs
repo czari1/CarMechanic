@@ -28,6 +28,6 @@ public class CarsContext : DbContext , ICarContext
         optionsBuilder.UseSqlServer(@"CarsConnectionString", x => x.MigrationsHistoryTable("__EFMigrationsHistory", DbConst.CARS_SCHEMA_NAME));
     } 
     
-    // fluent validation entityframework (przeczytac)
+    
     
 }
