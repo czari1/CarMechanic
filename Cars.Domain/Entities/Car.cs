@@ -35,9 +35,11 @@ public class Car : EntityBase, ISoftDeleteTable
         
         if (string.IsNullOrWhiteSpace(model)) throw new ArgumentNullException("Model cannot be null", nameof(model));
         
-        if (year <= 1900 || year > DateTime.Now.Year + 1) throw new ArgumentOutOfRangeException("Year of production is not possible",nameof(year));
+        if (year <= 1900 || year > DateTime.Now.Year + 1) 
+            throw new ArgumentOutOfRangeException("Year of production is not possible",nameof(year));
         
-        if (string.IsNullOrWhiteSpace(vin) || vin.Length != 17) throw new ArgumentOutOfRangeException("VIN cannot be null and have to be 17 characters", nameof(Vin));
+        if (string.IsNullOrWhiteSpace(vin) || vin.Length != 17) 
+            throw new ArgumentOutOfRangeException("VIN cannot be null and have to be 17 characters", nameof(vin));
     }
 
     //Metoda updateCar co miala robic?

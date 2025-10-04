@@ -1,14 +1,15 @@
 ﻿using Cars.Application.Common;
+using Cars.Domain.Entities;
 using Cars.Infrastructure.Persistance.Const;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Cars.Domain.Entities;
+namespace Cars.Infrastructure;
 
-public class CarsContext : DbContext , ICarContext
+public class CarDbContext : DbContext , ICarContext
 {
-    public CarsContext(DbContextOptions<CarsContext> options) : base(options)
+    public CarDbContext(DbContextOptions<CarDbContext> options) : base(options)
     {
 
     }

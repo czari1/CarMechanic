@@ -67,7 +67,7 @@ public class Client : EntityBase
     private Car GetCarById(int id)
     {
         return _cars.FirstOrDefault(c => c.Id == id)
-            ?? throw new ArgumentException($"Car with ID {Id} not found", nameof(Id));
+            ?? throw new ArgumentException($"Car with ID {id} not found", nameof(id));
     }
 
     
