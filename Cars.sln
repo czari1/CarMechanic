@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{306F741A-570D-43A3-85B1-41CAE92705EB}"
+	ProjectSection(SolutionItems) = preProject
+		Cars.Domain\Entities\Service.cs = Cars.Domain\Entities\Service.cs
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5ED05C60-1BA7-48E0-8FC5-43007F1C80E4}"
 EndProject

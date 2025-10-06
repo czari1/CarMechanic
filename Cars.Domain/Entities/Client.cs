@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cars.Domain.Entities;
 
-public class Client : EntityBase
+public class Client : AggregateRoot
 {
     private readonly List<Car> _cars = new();
 

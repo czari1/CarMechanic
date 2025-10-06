@@ -3,6 +3,6 @@ namespace Cars.Domain.Common.Interfaces
 {
     public interface ISoftDeleteTable
     {
-        bool IsDeleted { get; set; }
+        bool IsDeleted { get; protected set; }
     }
 }

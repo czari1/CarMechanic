@@ -13,19 +13,24 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
 {
     public void Configure(EntityTypeBuilder<Car> builder)
     {
+        builder.ToTable("Cars","Cars");
+
         builder.HasKey(x => x.Id);
         
         builder.Property(x => x.Model)
             .HasColumnName(nameof(Car.Model))
-            .HasMaxLength(20); // to samo dla kazdego pola
+            .HasMaxLength(20)
+            .IsRequired(); 
         
         builder.Property(x => x.Make)
             .HasColumnName(nameof(Car.Make))
-            .HasMaxLength(20); // to samo dla kazdego pola
+            .HasMaxLength(20)
+            .IsRequired(); 
         
         builder.Property(x => x.VIN)
             .HasColumnName(nameof(Car.VIN))
             .HasMaxLength(17)
+            .IsFixedLength()
             .IsRequired(); // jak zrobic zeby moglo byc tylko 17 znakow i nic innego
 
         builder.HasIndex(x => x.VIN)
@@ -33,17 +38,27 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
 
         builder.Property(x => x.Year)
             .HasColumnName(nameof(Car.Year))
-            .HasDefaultValue(0);
+            .HasDefaultValue(0)
+            .IsRequired();
         
         builder.Property(x => x.Visits)
             .HasColumnName(nameof(Car.Visits))
-            .HasDefaultValue(0);
+            .HasDefaultValue(0)
+            .IsRequired();
         
         builder.Property(x => x.IsDeleted)
             .HasColumnName(nameof(Car.IsDeleted))
-            .HasDefaultValue(false);
-
-        builder.Property<int>("ClientId")
+            .HasDefaultValue(false)
             .IsRequired();
+
+        builder.Property(x => x.CreatedOn)
+            .HasColumnName("CreatedOn")
+            .IsRequired();
+
+        builder.Property(x => x.ModifiedOn)
+            .HasColumnName("Modification")
+            .IsRequired();
+
+        
     }
 }

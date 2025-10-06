@@ -13,27 +13,38 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
 {
     public void Configure(EntityTypeBuilder<Service> builder)
     {
+        builder.ToTable("Services", "Cars");
+
         builder.HasKey(x => x.Id);
+
         builder.Property(x => x.ServiceName)
             .HasColumnName(nameof(Service.ServiceName))
-            .HasMaxLength(50); // to samo dla kazdego pola
+            .HasMaxLength(50)
+            .IsRequired(); // to samo dla kazdego pola
 
         builder.Property(x => x.ServiceDescription)
             .HasColumnName(nameof(Service.ServiceDescription))
-            .HasMaxLength(200);
+            .HasMaxLength(200)
+            .IsRequired();
 
         builder.Property(x => x.Price)
-            .HasColumnName(nameof(Service.Price)).HasPrecision(10, 2)
+            .HasColumnName(nameof(Service.Price))
+            .HasPrecision(10, 2)
+            .IsRequired()
             .HasDefaultValue(0.00m);
 
         builder.Property(x => x.ServiceDate)
-            .HasColumnName(nameof(Service.ServiceDate));
+            .HasColumnName(nameof(Service.ServiceDate))
+            .IsRequired();
 
         builder.Property(x => x.CreatedOn)
-            .HasColumnName("ServiceRequest");
-        
+            .HasColumnName("CreatedOn")
+            .IsRequired();
+
         builder.Property(x => x.ModifiedOn)
-            .HasColumnName("ServiceTimeUpdate");
-        //Reszta pol
+            .HasColumnName("ModifiedOn")
+            .IsRequired();
+
+        
     }
 }

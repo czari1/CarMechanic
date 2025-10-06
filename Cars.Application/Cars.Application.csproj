@@ -10,4 +10,16 @@
     <ProjectReference Include="..\Cars.Domain\Cars.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Clients\AddCar\" />
+    <Folder Include="Clients\DeleteCar\" />
+    <Folder Include="Clients\UpdateClient\" />
+    <Folder Include="Clients\UpdateCar\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="13.0.0" />
+  </ItemGroup>
+
 </Project>

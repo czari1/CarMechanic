@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Cars.Application.Common;
 
-public interface ICarContext : IQueryContext
+public interface ICarContext : IQueryContext , IContext
 {
     DbSet<Client> Clients { get; }
     DbSet<Service> Services { get; }
