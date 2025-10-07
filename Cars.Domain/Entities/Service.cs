@@ -1,6 +1,4 @@
 ﻿using Cars.Domain.Common.Entities;
-using System.ComponentModel.DataAnnotations;
-using System.Net.Http.Headers;
 
 namespace Cars.Domain.Entities;
 

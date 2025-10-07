@@ -1,5 +1,4 @@
 ﻿using Cars.Domain.Common.Entities;
-using System.ComponentModel.DataAnnotations;
 
 namespace Cars.Domain.Entities;
 
@@ -37,9 +36,9 @@ public class Client : AggregateRoot
     }
 
 
-    public void AddCar( string model, string make, int year, string vin)
+    public void AddCar(string make, string model, int year, string vin)
     {
-        Car newCar = new Car( model, make, year, vin);
+        Car newCar = new Car(make, model, year, vin);
         _cars.Add(newCar);
     }
 

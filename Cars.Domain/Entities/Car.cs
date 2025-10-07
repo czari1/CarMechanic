@@ -1,7 +1,5 @@
 ﻿using Cars.Domain.Common.Entities;
 using Cars.Domain.Common.Interfaces;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 
 namespace Cars.Domain.Entities;
 
