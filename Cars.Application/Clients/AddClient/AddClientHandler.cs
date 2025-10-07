@@ -1,11 +1,6 @@
 ﻿using Cars.Application.Common;
 using Cars.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cars.Application.Clients.AddClient;
 

@@ -1,16 +1,10 @@
-﻿using Cars.Application.Clients.AddClient;
-using Cars.Application.Common;
-using Cars.Domain.Entities;
+﻿using Cars.Application.Common;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Cars.Application.Clients.DeleteClient
 {
-    public sealed class DeleteClintHandler(ICarContext context)
+    public sealed class DeleteClientHandler(ICarContext context)
     : IRequestHandler<DeleteClientCommand>
     {
         public async Task Handle(DeleteClientCommand cmd, CancellationToken ct)
