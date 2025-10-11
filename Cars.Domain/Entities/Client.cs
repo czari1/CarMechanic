@@ -56,6 +56,29 @@ public class Client : AggregateRoot
     }
     //usluga zrobiona na aucie (historia) (zmiana wlasicicela)
 
+    public void Update(string newName, string newSurname, string newPhoneNumber)
+    {
+        if (!string.IsNullOrWhiteSpace(newName))
+        {
+            if (newName.Length > 40)
+                throw new ArgumentException("Name cannot exceed 40 characters", nameof(newName));
+            Name = newName;
+        }
+
+        if (!string.IsNullOrWhiteSpace(newSurname))
+        {
+            if (newSurname.Length > 40)
+                throw new ArgumentException("Surname cannot exceed 40 characters", nameof(newSurname));
+            Surname = newSurname;
+        }
+
+        if (!string.IsNullOrWhiteSpace(newPhoneNumber))
+        {
+            if (newPhoneNumber.Length != 9)
+                throw new ArgumentException("Phone number must be 9 characters", nameof(newPhoneNumber));
+            PhoneNumber = newPhoneNumber;
+        }
+    }
     public Car TransferCarOwnership(int id)
     {
         var carToTransfer = GetCarById(id);
