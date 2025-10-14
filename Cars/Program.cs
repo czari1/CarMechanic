@@ -12,9 +12,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<CarDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("CarsConnectionString"),
-        x => x.MigrationsHistoryTable("__EFMigrationsHistory", "Cars")
-    )
-);
+        x => x.MigrationsHistoryTable("__EFMigrationsHistory", "Cars")));
 
 var app = builder.Build();
 

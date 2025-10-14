@@ -8,20 +8,20 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
 {
     public void Configure(EntityTypeBuilder<Car> builder)
     {
-        builder.ToTable("Cars","Cars");
+        builder.ToTable("Cars", "Cars");
 
         builder.HasKey(x => x.Id);
-        
+
         builder.Property(x => x.Model)
             .HasColumnName(nameof(Car.Model))
             .HasMaxLength(20)
-            .IsRequired(); 
-        
+            .IsRequired();
+
         builder.Property(x => x.Make)
             .HasColumnName(nameof(Car.Make))
             .HasMaxLength(20)
-            .IsRequired(); 
-        
+            .IsRequired();
+
         builder.Property(x => x.VIN)
             .HasColumnName(nameof(Car.VIN))
             .HasMaxLength(17)
@@ -35,12 +35,12 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
             .HasColumnName(nameof(Car.Year))
             .HasDefaultValue(0)
             .IsRequired();
-        
+
         builder.Property(x => x.Visits)
             .HasColumnName(nameof(Car.Visits))
             .HasDefaultValue(0)
             .IsRequired();
-        
+
         builder.Property(x => x.IsDeleted)
             .HasColumnName(nameof(Car.IsDeleted))
             .HasDefaultValue(false)
@@ -53,7 +53,5 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
         builder.Property(x => x.ModifiedOn)
             .HasColumnName("Modification")
             .IsRequired();
-
-        
     }
 }

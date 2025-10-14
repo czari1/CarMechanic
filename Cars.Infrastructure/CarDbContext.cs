@@ -5,27 +5,28 @@ using System.Reflection;
 
 namespace Cars.Infrastructure;
 
-public class CarDbContext : DbContext , ICarContext
+public class CarDbContext : DbContext, ICarContext
 {
-    public CarDbContext(DbContextOptions<CarDbContext> options) : base(options)
+    public CarDbContext(DbContextOptions<CarDbContext> options)
+        : base(options)
     {
-
     }
+
     public DbSet<Client> Clients { get; set; } = null!;
+
     public DbSet<Service> Services { get; set; } = null!;
 
     public IQueryable<Car> CarQuery => Set<Car>().AsNoTracking().AsQueryable();
 
     void IContext.Add<TAggregate>(TAggregate entity)
     {
-        base.Add(entity);
+        this.Add(entity);
     }
 
     void IContext.Delete<TAggregate>(TAggregate entity)
     {
-        base.Remove(entity);
+        this.Remove(entity);
     }
-
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -36,8 +37,5 @@ public class CarDbContext : DbContext , ICarContext
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //{
     //    optionsBuilder.UseSqlServer(@"CarsConnectionString", x => x.MigrationsHistoryTable("__EFMigrationsHistory", DbConst.CARS_SCHEMA_NAME));
-    //} 
-
-
-
+    //}
 }

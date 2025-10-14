@@ -20,8 +20,7 @@ public class CarDbContextFactory : IDesignTimeDbContextFactory<CarDbContext>
 
         optionsBuilder.UseSqlServer(
             connectionString,
-            x => x.MigrationsHistoryTable("__EFMigrationsHistory", "Cars")
-        );
+            x => x.MigrationsHistoryTable("__EFMigrationsHistory", "Cars"));
 
         return new CarDbContext(optionsBuilder.Options);
     }

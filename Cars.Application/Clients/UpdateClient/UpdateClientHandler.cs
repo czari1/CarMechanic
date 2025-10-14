@@ -12,8 +12,13 @@ public sealed class UpdateClientHandler(ICarContext context)
         var entity = new Client(cmd.NewName, cmd.NewSurname, cmd.NewPhoneNumber);
         var validator = new UpdateClientValidator();
         var result = await validator.ValidateAsync(cmd, ct);
-        if (result.IsValid) return 0;
-        context.Add(entity);
+
+        if (result.IsValid)
+        {
+            return 0;
+        }
+
+        context.Add(entity); //Update w client i wziac po uwage id
         await context.SaveChangesAsync(ct);
         return entity.Id;
     }

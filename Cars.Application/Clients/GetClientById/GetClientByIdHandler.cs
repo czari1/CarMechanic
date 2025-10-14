@@ -4,12 +4,12 @@ using MediatR;
 
 namespace Cars.Application.Clients.GetClientById;
 
-public sealed record GetClientByIdHandler(ICarContext context)
+public sealed record GetClientByIdHandler(ICarContext Context)
     : IRequestHandler<GetClientByIdCommand, Client?>
 {
     public async Task<Client?> Handle(GetClientByIdCommand cmd, CancellationToken ct)
     {
-        var client = context.Clients.FirstOrDefault(c => c.Id == cmd.ClientId);
+        var client = Context.Clients.FirstOrDefault(c => c.Id == cmd.ClientId);
         return await Task.FromResult(client);
     }
 }

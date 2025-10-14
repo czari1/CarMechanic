@@ -39,7 +39,5 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
         builder.Property(x => x.ModifiedOn)
             .HasColumnName("ModifiedOn")
             .IsRequired();
-
-        
     }
 }

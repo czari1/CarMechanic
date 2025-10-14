@@ -2,9 +2,8 @@
 
 namespace Cars.Application.Common;
 
-public interface IContext 
+public interface IContext
 {
-    
     void Add<TAggregate>(TAggregate entity)
     where TAggregate : class, IAggregateRoot;
 

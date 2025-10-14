@@ -9,14 +9,16 @@ public sealed class AddClientValidator : AbstractValidator<AddClientCommand>
         RuleFor(x => x.Name)
             .NotEmpty()
             .MaximumLength(100);
-        
+
         RuleFor(x => x.Surname)
             .NotEmpty()
             .MaximumLength(100);
 
         RuleFor(x => x.PhoneNumber)
             .NotEmpty()
-            .Length(9,9);
+            .Length(9)
+            .Matches(@"^\d{9}$");
+
         //dodac reszte pol
     }
 }

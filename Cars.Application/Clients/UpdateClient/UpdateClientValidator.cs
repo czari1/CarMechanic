@@ -14,6 +14,7 @@ public sealed class UpdateClientValidator : AbstractValidator<UpdateClientComman
 
         RuleFor(x => x.NewPhoneNumber)
             .Length(9);
+
         //dodac reszte pol
     }
 }

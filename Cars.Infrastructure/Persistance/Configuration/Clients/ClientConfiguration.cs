@@ -10,7 +10,7 @@ public class ClientConfiguration : IEntityTypeConfiguration<Domain.Entities.Clie
         builder.ToTable("Clients", "Cars");
 
         builder.HasKey(x => x.Id);
-        
+
         builder.Navigation(x => x.Cars)
             .AutoInclude();
 
@@ -19,8 +19,8 @@ public class ClientConfiguration : IEntityTypeConfiguration<Domain.Entities.Clie
           .HasForeignKey("ClientId")
           .IsRequired()
           .OnDelete(DeleteBehavior.Cascade);
-        //Reszta kolumn
 
+        //Reszta kolumn
         builder.Property(x => x.Surname)
             .HasColumnName(nameof(Domain.Entities.Client.Surname))
             .HasMaxLength(40)
@@ -43,7 +43,5 @@ public class ClientConfiguration : IEntityTypeConfiguration<Domain.Entities.Clie
         builder.Property(x => x.ModifiedOn)
             .HasColumnName("ModifiedOn")
             .IsRequired();
-
     }
-
 }

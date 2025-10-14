@@ -9,7 +9,7 @@ public sealed class DisplayAllCarsHandler(ICarContext context)
 {
     public async Task<IEnumerable<Car>> Handle(DisplayAllCarsCommand cmd, CancellationToken ct)
     {
-        var cars = context.CarQuery.ToList();
+        var cars = context.CarQuery.ToList(); //Warstwa modeli musi dosc do poprawy displaye
         return await Task.FromResult(cars);
     }
 }
