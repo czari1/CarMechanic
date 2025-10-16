@@ -98,7 +98,7 @@ public sealed class ClientBuilder
 
     public Client Build()
     {
-        var entity = new Client(_name, _surname, _phoneNumber);
+        var entity = new Client(_id ?? 0, _name, _surname, _phoneNumber);
 
         if (_id.HasValue)
         {
