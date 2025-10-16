@@ -6,16 +6,7 @@ public class Client : AggregateRoot
 {
     private readonly List<Car> _cars = new();
 
-    public IReadOnlyCollection<Car> Cars => _cars; // Czy chodzilo o to ze klasa Car byla internal zamiast public?
-
-    public string Name { get; private set; }
-
-    public string Surname { get; private set; }
-
-    public string PhoneNumber { get; private set; }
-
-    //konstruktor
-    public Client(string name, string surname, string phoneNumber)
+    public Client(int id, string name, string surname, string phoneNumber)
     {
         ValidateClientData(name, surname);
 
@@ -26,22 +17,21 @@ public class Client : AggregateRoot
 
     protected Client()
     {
+        Name = string.Empty;
+        Surname = string.Empty;
+        PhoneNumber = string.Empty;
     }
 
+    public IReadOnlyCollection<Car> Cars => _cars; // Czy chodzilo o to ze klasa Car byla internal zamiast public?
+
+    public string Name { get; private set; }
+
+    public string Surname { get; private set; }
+
+    public string PhoneNumber { get; private set; }
+
+    //konstruktor
     //addCar deleteCar updateCar walidacja dla metod
-    private static void ValidateClientData(string name, string surname)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentNullException("Name cannot be null or empty", nameof(name));
-        }
-
-        if (string.IsNullOrWhiteSpace(surname))
-        {
-            throw new ArgumentNullException("Surname cannot be null or empty", nameof(surname));
-        }
-    }
-
     public void AddCar(string make, string model, int year, string vin)
     {
         Car newCar = new Car(make, model, year, vin);
@@ -61,7 +51,7 @@ public class Client : AggregateRoot
     }
 
     //usluga zrobiona na aucie (historia) (zmiana wlasicicela)
-    public void Update(string newName, string newSurname, string newPhoneNumber)
+    public void Update(int newId, string newName, string newSurname, string newPhoneNumber)
     {
         if (!string.IsNullOrWhiteSpace(newName))
         {
@@ -100,16 +90,55 @@ public class Client : AggregateRoot
         }
     }
 
-    public Car TransferCarOwnership(int id)
+    public Car TransferCarOwnership(int carId)
     {
-        var carToTransfer = GetCarById(id);
+        var carToTransfer = GetCarById(carId);
+
+        if (carToTransfer.IsDeleted)
+        {
+            throw new InvalidOperationException($"Cannot transfer car with ID {carId} because it is marked as deleted");
+        }
+
         _cars.Remove(carToTransfer);
         return carToTransfer;
+    }
+
+    public void ReceiveCar(Car car)
+    {
+        if (car == null)
+        {
+            throw new ArgumentNullException(nameof(car), "Car cannot be null");
+        }
+
+        if (car.IsDeleted)
+        {
+            throw new InvalidOperationException("Cannot receive a car that is marked as deleted");
+        }
+
+        if (_cars.Any(c => c.VIN == car.VIN))
+        {
+            throw new InvalidOperationException($"Car with VIN {car.VIN} already belongs to this client");
+        }
+
+        _cars.Add(car);
     }
 
     private Car GetCarById(int id)
     {
         return _cars.FirstOrDefault(c => c.Id == id)
             ?? throw new ArgumentException($"Car with ID {id} not found", nameof(id));
+    }
+
+    private static void ValidateClientData(string name, string surname)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentNullException("Name cannot be null or empty", nameof(name));
+        }
+
+        if (string.IsNullOrWhiteSpace(surname))
+        {
+            throw new ArgumentNullException("Surname cannot be null or empty", nameof(surname));
+        }
     }
 }

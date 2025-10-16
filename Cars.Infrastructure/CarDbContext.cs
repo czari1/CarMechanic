@@ -1,7 +1,6 @@
 ﻿using Cars.Application.Common;
 using Cars.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace Cars.Infrastructure;
 
@@ -30,7 +29,7 @@ public class CarDbContext : DbContext, ICarContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.ApplyConfigurationsFromAssembly(System.Reflection.Assembly.GetExecutingAssembly());
         base.OnModelCreating(builder);
     }
 
