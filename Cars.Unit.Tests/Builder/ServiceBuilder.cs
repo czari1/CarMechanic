@@ -25,6 +25,17 @@ public sealed class ServiceBuilder
         _price = _faker.Finance.Amount(50, 2000);
     }
 
+    public ServiceBuilder WithDefaults(
+        string? serviceName = null,
+        string? serviceDescription = null,
+        decimal? price = null)
+    {
+        _serviceName = serviceName ?? "Oil Change";
+        _serviceDescription = serviceDescription ?? "Standard oil change service";
+        _price = price ?? 299.99m;
+        return this;
+    }
+
     public ServiceBuilder WithId(int id)
     {
         _id = id;
@@ -73,11 +84,11 @@ public sealed class ServiceBuilder
 
         if (_id.HasValue)
         {
-            entity.Id = _id.Value;
+            typeof(Service).GetProperty("Id")!.SetValue(entity, _id.Value);
         }
 
-        entity.CreatedOn = _createdOn;
-        entity.ModifiedOn = _modifiedOn;
+        typeof(Service).GetProperty("CreatedOn")!.SetValue(entity, _createdOn);
+        typeof(Service).GetProperty("ModifiedOn")!.SetValue(entity, _modifiedOn);
 
         return entity;
     }

@@ -1,7 +1,6 @@
 ﻿using Bogus;
 using Cars.Domain.Entities;
-
-namespace Cars.Tests.Builders;
+using Cars.Tests.Builders;
 
 public sealed class ClientBuilder
 {
@@ -26,6 +25,17 @@ public sealed class ClientBuilder
         _name = _faker.Name.FirstName();
         _surname = _faker.Name.LastName();
         _phoneNumber = _faker.Phone.PhoneNumber("##########").Substring(0, 9);
+    }
+
+    public ClientBuilder WithDefaults(
+        string? name = null,
+        string? surname = null,
+        string? phoneNumber = null)
+    {
+        _name = name ?? "Jan";
+        _surname = surname ?? "Kowalski";
+        _phoneNumber = phoneNumber ?? "123456789";
+        return this;
     }
 
     public ClientBuilder WithId(int id)
@@ -98,16 +108,17 @@ public sealed class ClientBuilder
 
     public Client Build()
     {
-        var entity = new Client(_id ?? 0, _name, _surname, _phoneNumber);
+        // POPRAWKA: Konstruktor Client nie przyjmuje Id jako parametru
+        var entity = new Client(_id ?? 1, _name, _surname, _phoneNumber);
 
         if (_id.HasValue)
         {
-            entity.Id = _id.Value;
+            typeof(Client).GetProperty("Id")!.SetValue(entity, _id.Value);
         }
 
-        entity.CreatedOn = _createdOn;
-        entity.ModifiedOn = _modifiedOn;
-        entity.IsDeleted = _isDeleted;
+        typeof(Client).GetProperty("CreatedOn")!.SetValue(entity, _createdOn);
+        typeof(Client).GetProperty("ModifiedOn")!.SetValue(entity, _modifiedOn);
+        typeof(Client).GetProperty("IsDeleted")!.SetValue(entity, _isDeleted);
 
         foreach (var car in _cars)
         {

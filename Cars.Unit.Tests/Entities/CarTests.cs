@@ -1,17 +1,37 @@
-﻿using Shouldly;
-
-namespace Cars.Unit.Tests.Entities;
+﻿using Cars.Domain.Entities;
+using Cars.Tests.Builders;
+using Shouldly;
 
 public class CarTests
 {
+    [Fact]
+    public void Build_Should_Create_Car_With_Default_Values()
+    {
+        // Arrange & Act
+        var car = new CarBuilder()
+            .WithDefaults(
+                make: "Toyota",
+                model: "Corolla",
+                year: 2023,
+                vin: "1HGBH41JXMN109186")
+            .Build();
+
+        // Assert
+        car.ShouldNotBeNull();
+        car.Make.ShouldBe("Toyota");
+        car.Model.ShouldBe("Corolla");
+        car.Year.ShouldBe(2023);
+        car.VIN.ShouldBe("1HGBH41JXMN109186");
+        car.Visits.ShouldBe(0);
+        car.IsDeleted.ShouldBeFalse();
+    }
+
     [Fact]
     public void Update_Should_Change_Make_Model_And_Year()
     {
         // Arrange
         var car = new CarBuilder()
-            .WithMake("Toyota")
-            .WithModel("Corolla")
-            .WithYear(2020)
+            .WithDefaults(make: "Toyota", model: "Corolla", year: 2020)
             .Build();
 
         // Act
@@ -28,23 +48,26 @@ public class CarTests
     {
         // Arrange
         var car = new CarBuilder()
-            .WithMake("Toyota")
-            .WithModel("Corolla")
+            .WithDefaults(make: "Toyota", model: "Corolla")
             .Build();
+        var originalMake = car.Make;
+        var originalModel = car.Model;
 
         // Act
         car.Update("", "", 2020);
 
         // Assert
-        car.Make.ShouldBe("Toyota");
-        car.Model.ShouldBe("Corolla");
+        car.Make.ShouldBe(originalMake);
+        car.Model.ShouldBe(originalModel);
     }
 
     [Fact]
     public void Update_Should_Throw_When_Invalid_Year()
     {
         // Arrange
-        var car = new CarBuilder().Build();
+        var car = new CarBuilder()
+            .WithDefaults()
+            .Build();
 
         // Act & Assert
         Should.Throw<ArgumentException>(() => car.Update("Honda", "Civic", 1800));
@@ -54,7 +77,9 @@ public class CarTests
     public void IncrementVisits_Should_Increase_Visits_Count()
     {
         // Arrange
-        var car = new CarBuilder().Build();
+        var car = new CarBuilder()
+            .WithDefaults()
+            .Build();
 
         // Act
         car.IncrementVisits();
@@ -69,7 +94,9 @@ public class CarTests
     public void Delete_Should_Set_IsDeleted_To_True()
     {
         // Arrange
-        var car = new CarBuilder().Build();
+        var car = new CarBuilder()
+            .WithDefaults()
+            .Build();
 
         // Act
         car.Delete(1);
@@ -83,6 +110,7 @@ public class CarTests
     {
         // Arrange
         var car = new CarBuilder()
+            .WithDefaults()
             .WithDeleted(true)
             .Build();
 
@@ -92,5 +120,19 @@ public class CarTests
         // Assert
         car.IsDeleted.ShouldBeFalse();
     }
-}
 
+    [Theory]
+    [InlineData("", "Model", 2020, "1HGBH41JXMN109186")]
+    [InlineData("Make", "", 2020, "1HGBH41JXMN109186")]
+    [InlineData("Make", "Model", 2020, "")]
+    [InlineData("Make", "Model", 2020, "SHORT")]
+    public void Constructor_Should_Throw_Exception_When_Invalid_Data(
+        string make,
+        string model,
+        int year,
+        string vin)
+    {
+        // Act & Assert
+        Should.Throw<Exception>(() => new Car(make, model, year, vin));
+    }
+}

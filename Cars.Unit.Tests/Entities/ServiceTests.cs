@@ -1,16 +1,35 @@
-﻿using Shouldly;
+﻿using Cars.Domain.Entities;
+using Shouldly;
 
-namespace Cars.Unit.Tests.Entities;
 public class ServiceTests
 {
+    [Fact]
+    public void Build_Should_Create_Service_With_Default_Values()
+    {
+        // Arrange & Act
+        var service = new ServiceBuilder()
+            .WithDefaults(
+                serviceName: "Oil Change",
+                serviceDescription: "Standard oil change",
+                price: 299.99m)
+            .Build();
+
+        // Assert
+        service.ShouldNotBeNull();
+        service.ServiceName.ShouldBe("Oil Change");
+        service.ServiceDescription.ShouldBe("Standard oil change");
+        service.Price.ShouldBe(299.99m);
+    }
+
     [Fact]
     public void UpdateService_Should_Change_Name_Description_And_Price()
     {
         // Arrange
         var service = new ServiceBuilder()
-            .WithServiceName("Oil Change")
-            .WithServiceDescription("Standard oil change")
-            .WithPrice(150.00m)
+            .WithDefaults(
+                serviceName: "Oil Change",
+                serviceDescription: "Standard oil change",
+                price: 150.00m)
             .Build();
 
         // Act
@@ -27,9 +46,10 @@ public class ServiceTests
     {
         // Arrange
         var service = new ServiceBuilder()
-            .WithServiceName("Oil Change")
-            .WithServiceDescription("Standard oil change")
-            .WithPrice(150.00m)
+            .WithDefaults(
+                serviceName: "Oil Change",
+                serviceDescription: "Standard oil change",
+                price: 150.00m)
             .Build();
 
         // Act
@@ -46,7 +66,7 @@ public class ServiceTests
     {
         // Arrange
         var service = new ServiceBuilder()
-            .WithPrice(150.00m)
+            .WithDefaults(price: 150.00m)
             .Build();
 
         // Act
@@ -61,13 +81,55 @@ public class ServiceTests
     {
         // Arrange
         var service = new ServiceBuilder()
-            .WithPrice(150.00m)
+            .WithDefaults(price: 150.00m)
             .Build();
 
         // Act
         service.UpdateService("Oil Change", "Standard service", -50m);
 
         // Assert
-        service.Price.ShouldBe(150.00m); // Price should remain unchanged
+        service.Price.ShouldBe(150.00m);
+    }
+
+    [Fact]
+    public void Constructor_Should_Set_ServiceDate_To_Current_Time()
+    {
+        // Arrange
+        var beforeCreation = DateTime.UtcNow;
+
+        // Act
+        var service = new ServiceBuilder()
+            .WithDefaults()
+            .Build();
+
+        var afterCreation = DateTime.UtcNow;
+
+        // Assert
+        service.ServiceDate.ShouldBeGreaterThanOrEqualTo(beforeCreation);
+        service.ServiceDate.ShouldBeLessThanOrEqualTo(afterCreation);
+    }
+
+    [Theory]
+    [InlineData("", "Description", 100)]
+    [InlineData("Name", "", 100)]
+    public void Constructor_Should_Throw_Exception_When_Invalid_Data(
+        string serviceName,
+        string serviceDescription,
+        decimal price)
+    {
+        // Act & Assert
+        Should.Throw<ArgumentNullException>(() =>
+            new Service(serviceName, serviceDescription, price));
+    }
+
+    [Fact]
+    public void Constructor_Should_Throw_Exception_When_Price_Is_Zero_Or_Negative()
+    {
+        // Act & Assert
+        Should.Throw<ArgumentOutOfRangeException>(() =>
+            new Service("Name", "Description", 0));
+
+        Should.Throw<ArgumentOutOfRangeException>(() =>
+            new Service("Name", "Description", -1));
     }
 }

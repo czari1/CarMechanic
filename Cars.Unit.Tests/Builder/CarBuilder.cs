@@ -1,6 +1,8 @@
 ﻿using Bogus;
 using Cars.Domain.Entities;
 
+namespace Cars.Tests.Builders;
+
 public sealed class CarBuilder
 {
     private readonly Faker _faker;
@@ -26,6 +28,19 @@ public sealed class CarBuilder
         _model = _faker.Vehicle.Model();
         _year = _faker.Date.Past(10).Year;
         _vin = GenerateVin();
+    }
+
+    public CarBuilder WithDefaults(
+        string? make = null,
+        string? model = null,
+        int? year = null,
+        string? vin = null)
+    {
+        _make = make ?? "Toyota";
+        _model = model ?? "Corolla";
+        _year = year ?? DateTime.Now.Year;
+        _vin = vin ?? "1HGBH41JXMN109186";
+        return this;
     }
 
     public CarBuilder WithId(int id)
@@ -88,12 +103,12 @@ public sealed class CarBuilder
 
         if (_id.HasValue)
         {
-            entity.Id = _id.Value;
+            typeof(Car).GetProperty("Id")!.SetValue(entity, _id.Value);
         }
 
-        entity.CreatedOn = _createdOn;
-        entity.ModifiedOn = _modifiedOn;
-        entity.IsDeleted = _isDeleted;
+        typeof(Car).GetProperty("CreatedOn")!.SetValue(entity, _createdOn);
+        typeof(Car).GetProperty("ModifiedOn")!.SetValue(entity, _modifiedOn);
+        typeof(Car).GetProperty("IsDeleted")!.SetValue(entity, _isDeleted);
 
         for (int i = 0; i < _visits; i++)
         {
