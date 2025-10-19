@@ -31,6 +31,12 @@ public class Service : EntityBase
     public DateTime ServiceDate { get; private set; }
 
     //public ServiceState stateOfTheService {get; set private;} czy to w enumie oddzielnym pliku
+
+    public void AddService(string serviceName, string serviceDescription, decimal price)
+    {
+        Service newService = new Service(serviceName, serviceDescription, price);
+    }
+
     public void UpdateService(string newName, string newDescription, decimal newPrice)
     {
         if (!string.IsNullOrWhiteSpace(newName))

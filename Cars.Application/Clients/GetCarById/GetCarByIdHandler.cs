@@ -1,21 +1,32 @@
+using Cars.Application.Clients.Models;
 using Cars.Application.Common;
-using Cars.Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cars.Application.Clients.GetCarById;
 
 public sealed record GetCarByIdHandler(ICarContext Context)
-    : IRequestHandler<GetCarByIdCommand, Car?>
+    : IRequestHandler<GetCarByIdCommand, CarDto?>
 {
-    public async Task<Car?> Handle(GetCarByIdCommand cmd, CancellationToken ct)
+    public async Task<CarDto?> Handle(GetCarByIdCommand cmd, CancellationToken ct)
     {
-        var car = Context.CarQuery.FirstOrDefault(c => c.Id == cmd.CarId);
+        var car = await Context.Clients
+            .AsNoTracking()
+            .SelectMany(client => client.Cars
+                .Where(c => c.Id == cmd.CarId)
+                .Select(c => new CarDto(
+                    c.Id,
+                    c.Make,
+                    c.Model,
+                    c.Year,
+                    c.VIN,
+                    c.Visits,
+                    c.IsDeleted,
+                    c.CreatedOn,
+                    c.ModifiedOn))
+                .ToList())
+        .FirstOrDefaultAsync(ct);
 
-        if (car == null)
-        {
-            throw new KeyNotFoundException($"Car with id {cmd.CarId} was not found.");
-        }
-
-        return await Task.FromResult(car);
+        return car;
     }
 }

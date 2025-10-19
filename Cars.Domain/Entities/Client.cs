@@ -22,7 +22,7 @@ public class Client : AggregateRoot
         PhoneNumber = string.Empty;
     }
 
-    public IReadOnlyCollection<Car> Cars => _cars; // Czy chodzilo o to ze klasa Car byla internal zamiast public?
+    public IReadOnlyCollection<Car> Cars => _cars;
 
     public string Name { get; private set; }
 

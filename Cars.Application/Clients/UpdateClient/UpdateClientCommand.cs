@@ -3,7 +3,7 @@ using MediatR;
 namespace Cars.Application.Clients.UpdateClient;
 
 public sealed record UpdateClientCommand(
-    int NewId,
+    int ClientId, //ma bycclientid
     string NewName, // dodac ClientId
     string NewSurname,
     string NewPhoneNumber)

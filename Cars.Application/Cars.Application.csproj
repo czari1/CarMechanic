@@ -13,10 +13,12 @@
   <ItemGroup>
     <Folder Include="Clients\AddCar\" />
     <Folder Include="Clients\DeleteCar\" />
-    <Folder Include="Clients\GetCarById\" />
-    <Folder Include="Clients\GetClientById\" />
     <Folder Include="Clients\UpdateClient\" />
     <Folder Include="Clients\UpdateCar\" />
+    <Folder Include="Services\AddService\" />
+    <Folder Include="Services\DeleteService\" />
+    <Folder Include="Services\DisplayAllServices\" />
+    <Folder Include="Services\UpdateService\" />
   </ItemGroup>
 
   <ItemGroup>
