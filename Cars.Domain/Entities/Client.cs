@@ -51,7 +51,7 @@ public class Client : AggregateRoot
     }
 
     //usluga zrobiona na aucie (historia) (zmiana wlasicicela)
-    public void Update(int newId, string newName, string newSurname, string newPhoneNumber)
+    public void Update(int Id, string newName, string newSurname, string newPhoneNumber)
     {
         if (!string.IsNullOrWhiteSpace(newName))
         {

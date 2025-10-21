@@ -2,7 +2,7 @@
 
 namespace Cars.Domain.Entities;
 
-public class Service : EntityBase
+public class Service : AggregateRoot
 {
     //konstruktory
     public Service(string serviceName, string serviceDescription, decimal price)
@@ -31,22 +31,26 @@ public class Service : EntityBase
     public DateTime ServiceDate { get; private set; }
 
     //public ServiceState stateOfTheService {get; set private;} czy to w enumie oddzielnym pliku
-
-    public void AddService(string serviceName, string serviceDescription, decimal price)
+    public void Update(string newServiceName, string newServiceDescription, decimal newPrice)
     {
-        Service newService = new Service(serviceName, serviceDescription, price);
-    }
-
-    public void UpdateService(string newName, string newDescription, decimal newPrice)
-    {
-        if (!string.IsNullOrWhiteSpace(newName))
+        if (!string.IsNullOrWhiteSpace(newServiceName))
         {
-            ServiceName = newName;
+            if (newServiceName.Length > 50)
+            {
+                throw new ArgumentException("Service name cannot exceed 50 characters", nameof(newServiceName));
+            }
+
+            ServiceName = newServiceName;
         }
 
-        if (!string.IsNullOrWhiteSpace(newDescription))
+        if (!string.IsNullOrWhiteSpace(newServiceDescription))
         {
-            ServiceDescription = newDescription;
+            if (newServiceDescription.Length > 200)
+            {
+                throw new ArgumentException("Service description cannot exceed 200 characters", nameof(newServiceDescription));
+            }
+
+            ServiceDescription = newServiceDescription;
         }
 
         if (newPrice >= 0)
