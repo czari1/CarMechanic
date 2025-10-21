@@ -6,9 +6,6 @@ public sealed class UpdateClientValidator : AbstractValidator<UpdateClientComman
 {
     public UpdateClientValidator()
     {
-        RuleFor(x => x.NewId)
-            .GreaterThan(0);
-
         RuleFor(x => x.NewName)
             .MaximumLength(100);
 
@@ -17,7 +14,5 @@ public sealed class UpdateClientValidator : AbstractValidator<UpdateClientComman
 
         RuleFor(x => x.NewPhoneNumber)
             .Length(9);
-
-        //dodac reszte pol
     }
 }
