@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Application\Tests\Clients\**" />
+    <EmbeddedResource Remove="Application\Tests\Clients\**" />
+    <None Remove="Application\Tests\Clients\**" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<None Update="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="Shouldly" Version="4.3.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\Tests\Client\DisplayAllCars\" />
+    <Folder Include="Application\Tests\Client\DisplayAllClients\" />
+    <Folder Include="Application\Tests\Client\GetCarById\" />
+    <Folder Include="Application\Tests\Client\GetClientById\" />
+    <Folder Include="Application\Tests\Client\UpdateCar\" />
+    <Folder Include="Application\Tests\Client\UpdateClient\" />
+    <Folder Include="Application\Tests\Services\DeleteService\" />
+    <Folder Include="Application\Tests\Services\DisplayAllServices\" />
+    <Folder Include="Application\Tests\Services\GetServiceById\" />
+    <Folder Include="Application\Tests\Services\UpdateService\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cars.Application\Cars.Application.csproj" />
+    <ProjectReference Include="..\Cars.Infrastructure\Cars.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

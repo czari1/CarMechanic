@@ -1,4 +1,6 @@
-﻿namespace Cars.Domain.Common.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Cars.Domain.Common.Entities;
 
 public abstract class EntityBase
 {

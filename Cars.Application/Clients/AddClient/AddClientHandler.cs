@@ -10,7 +10,6 @@ public sealed class AddClientHandler(ICarContext context)
 {
     public async Task<int> Handle(AddClientCommand cmd, CancellationToken ct)
     {
-        var entity = new Client(cmd.Id, cmd.Name, cmd.Surname, cmd.PhoneNumber);
         var validator = new AddClientValidator();
         var result = await validator.ValidateAsync(cmd, ct);
 
@@ -19,6 +18,7 @@ public sealed class AddClientHandler(ICarContext context)
             throw new ValidationException(result.Errors);
         }
 
+        var entity = new Client(cmd.Id, cmd.Name, cmd.Surname, cmd.PhoneNumber);
         context.Add(entity);
         await context.SaveChangesAsync(ct);
         return entity.Id;

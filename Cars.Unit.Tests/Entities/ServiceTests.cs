@@ -33,7 +33,7 @@ public class ServiceTests
             .Build();
 
         // Act
-        service.UpdateService("Premium Oil Change", "Synthetic oil change", 250.00m);
+        service.Update("Premium Oil Change", "Synthetic oil change", 250.00m);
 
         // Assert
         service.ServiceName.ShouldBe("Premium Oil Change");
@@ -53,7 +53,7 @@ public class ServiceTests
             .Build();
 
         // Act
-        service.UpdateService("", "", 150.00m);
+        service.Update("", "", 150.00m);
 
         // Assert
         service.ServiceName.ShouldBe("Oil Change");
@@ -70,7 +70,7 @@ public class ServiceTests
             .Build();
 
         // Act
-        service.UpdateService("Free Check", "Complimentary inspection", 0m);
+        service.Update("Free Check", "Complimentary inspection", 0m);
 
         // Assert
         service.Price.ShouldBe(0m);
@@ -85,7 +85,7 @@ public class ServiceTests
             .Build();
 
         // Act
-        service.UpdateService("Oil Change", "Standard service", -50m);
+        service.Update("Oil Change", "Standard service", -50m);
 
         // Assert
         service.Price.ShouldBe(150.00m);
