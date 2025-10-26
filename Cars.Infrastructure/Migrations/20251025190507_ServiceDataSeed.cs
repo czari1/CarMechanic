@@ -5,21 +5,13 @@
 namespace Cars.Infrastructure.Migrations;
 
 /// <inheritdoc />
-public partial class SeedServiceData : Migration
+public partial class ServiceDataSeed : Migration
 {
     private DateTime now = DateTime.UtcNow;
 
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.AddColumn<bool>(
-            name: "IsDeleted",
-            schema: "Cars",
-            table: "Clients",
-            type: "bit",
-            nullable: false,
-            defaultValue: false);
-
         InsertServices(
             migrationBuilder,
             1,
@@ -59,6 +51,11 @@ public partial class SeedServiceData : Migration
     /// <inheritdoc />
     protected override void Down(MigrationBuilder migrationBuilder)
     {
+        migrationBuilder.DeleteData(
+               schema: "Cars",
+               table: "Services",
+               keyColumn: "Id",
+               keyValues: new object[] { 1, 2, 3, 4, 5 });
     }
 
     private void InsertServices(MigrationBuilder migrationBuilder, int id, string serviceName, string serviceDescription, decimal price)

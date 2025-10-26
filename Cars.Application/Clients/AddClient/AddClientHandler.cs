@@ -18,7 +18,7 @@ public sealed class AddClientHandler(ICarContext context)
             throw new ValidationException(result.Errors);
         }
 
-        var entity = new Client(cmd.Id, cmd.Name, cmd.Surname, cmd.PhoneNumber);
+        var entity = new Client(cmd.Name, cmd.Surname, cmd.PhoneNumber);
         context.Add(entity);
         await context.SaveChangesAsync(ct);
         return entity.Id;

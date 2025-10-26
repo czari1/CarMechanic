@@ -2,6 +2,8 @@
 using Cars.Domain.Entities;
 using Cars.Tests.Builders;
 
+namespace Cars.Tests.Builders;
+
 public sealed class ClientBuilder
 {
     private readonly List<Car> _cars = new();
@@ -108,9 +110,10 @@ public sealed class ClientBuilder
 
     public Client Build()
     {
-        // POPRAWKA: Konstruktor Client nie przyjmuje Id jako parametru
-        var entity = new Client(_id ?? 1, _name, _surname, _phoneNumber);
+        // Create entity without ID - let EF generate it
+        var entity = new Client(_name, _surname, _phoneNumber);
 
+        // Set ID via reflection if specified (for testing purposes only)
         if (_id.HasValue)
         {
             typeof(Client).GetProperty("Id")!.SetValue(entity, _id.Value);

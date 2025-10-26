@@ -43,7 +43,7 @@ public class AddServiceCommandHandlerTests : ApplicationTestsBase
             created.ServiceName.ShouldBe("Wymiana");
             created.ServiceDescription.ShouldBe("Wymiana skrzyni");
             created.Price.ShouldBe(200.0m);
-            created.ServiceDate.ShouldNotBeOfType<DateTime>();
+            created.ServiceDate.ShouldBeOfType<DateTime>();
         }
         finally
         {

@@ -215,6 +215,6 @@ public class ClientTests
     {
         // Act & Assert
         Should.Throw<ArgumentNullException>(() =>
-            new Client(1, name, surname, "123456789"));
+            new Client(name, surname, "123456789"));
     }
 }

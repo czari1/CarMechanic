@@ -6,7 +6,7 @@ public class Client : AggregateRoot
 {
     private readonly List<Car> _cars = new();
 
-    public Client(int id, string name, string surname, string phoneNumber)
+    public Client(string name, string surname, string phoneNumber)
     {
         ValidateClientData(name, surname);
 
@@ -30,8 +30,6 @@ public class Client : AggregateRoot
 
     public string PhoneNumber { get; private set; }
 
-    //konstruktor
-    //addCar deleteCar updateCar walidacja dla metod
     public void AddCar(string make, string model, int year, string vin)
     {
         Car newCar = new Car(make, model, year, vin);
@@ -50,7 +48,6 @@ public class Client : AggregateRoot
         _cars.Remove(carToRemove);
     }
 
-    //usluga zrobiona na aucie (historia) (zmiana wlasicicela)
     public void Update(int id, string newName, string newSurname, string newPhoneNumber)
     {
         if (!string.IsNullOrWhiteSpace(newName))

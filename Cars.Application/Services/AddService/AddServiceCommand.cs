@@ -3,7 +3,7 @@ using MediatR;
 namespace Cars.Application.Services.AddService;
 
 public sealed record AddServiceCommand(
-    int ServiceId,
+    int ServiceId, //Czy to usunac czy zostawic
     string ServiceName,
     string ServiceDescription,
     decimal Price,

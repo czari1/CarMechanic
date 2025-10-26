@@ -20,6 +20,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.6.4" />
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.10" />
@@ -35,11 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Tests\Client\DisplayAllCars\" />
-    <Folder Include="Application\Tests\Client\DisplayAllClients\" />
     <Folder Include="Application\Tests\Client\GetCarById\" />
     <Folder Include="Application\Tests\Client\GetClientById\" />
-    <Folder Include="Application\Tests\Client\UpdateCar\" />
     <Folder Include="Application\Tests\Client\UpdateClient\" />
     <Folder Include="Application\Tests\Services\DeleteService\" />
     <Folder Include="Application\Tests\Services\DisplayAllServices\" />
