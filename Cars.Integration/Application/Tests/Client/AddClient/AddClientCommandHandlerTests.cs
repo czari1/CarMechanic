@@ -1,6 +1,5 @@
 ﻿using Cars.Application.Clients.AddClient;
 using Cars.Application.Common;
-using Cars.Domain.Entities;
 using Cars.Integration.Application.Tests.Base;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

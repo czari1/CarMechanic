@@ -28,20 +28,15 @@ public class DisplayAllCarsCommandHandlerTests : ApplicationTestsBase
 
             var client1 = await new ClientBuilder(ctx)
                 .WithDefaults(name: "Jan", surname: "Kowalski", phoneNumber: "123456789")
+                .WithCar("Toyota", "Corolla", 2020, "VIN00000000000001")
+                .WithCar("Honda", "Civic", 2021, "VIN00000000000002")
                 .Build();
-
-            client1.AddCar("Toyota", "Corolla", 2020, "1HGBH41JXMN109186");
-            client1.AddCar("Honda", "Civic", 2021, "2HGBH41JXMN109187");
 
             var client2 = await new ClientBuilder(ctx)
-                .WithDefaults(name: "Janek", surname: "Kowalska", phoneNumber: "113456789")
-                .Build();
+               .WithDefaults(name: "Janek", surname: "Kowalska", phoneNumber: "113456789")
+               .WithCar("Ford", "Focus", 2019, "VIN00000000000003")
+               .Build();
 
-            client2.AddCar("Ford", "Focus", 2019, "3HGBH41JXMN109188");
-
-            ctx.Add(client1);
-            ctx.Add(client2);
-            await ctx.SaveChangesAsync(CancellationToken);
 
             clientId1 = client1.Id;
             clientId2 = client2.Id;
@@ -91,12 +86,9 @@ public class DisplayAllCarsCommandHandlerTests : ApplicationTestsBase
 
             var client = await new ClientBuilder(ctx)
                 .WithDefaults(name: "Jan", surname: "Kowalski", phoneNumber: "123456789")
+                .WithCar("Toyota", "Corolla", 2020, "VIN00000000000004")
                 .Build();
 
-            client.AddCar("Toyota", "Corolla", 2020, "1HGBH41JXMN109186");
-
-            ctx.Add(client);
-            await ctx.SaveChangesAsync(CancellationToken);
             clientId = client.Id;
 
             var car = client.Cars.First();
@@ -107,7 +99,7 @@ public class DisplayAllCarsCommandHandlerTests : ApplicationTestsBase
 
             var result = await handler.Handle(cmd, CancellationToken);
 
-            result.ShouldNotContain(c => c.Vin == "1HGBH41JXMN109186");
+            result.ShouldNotContain(c => c.Vin == "VIN00000000000004");
 
         }
         finally
@@ -132,7 +124,93 @@ public class DisplayAllCarsCommandHandlerTests : ApplicationTestsBase
 
         var result = await handler.Handle(cmd, CancellationToken);
 
-        result.ShouldBeNull();
         result.ShouldBeEmpty();
     }
+
+    [Fact]
+    public async Task Handle_Should_Return_Car_After_ReverseDelet()
+    {
+        int? clientId = null;
+        try
+        {
+            using var scope = ServiceProvider.CreateScope();
+            var sp = scope.ServiceProvider;
+            var ctx = sp.GetRequiredService<ICarContext>();
+            var handler = sp.GetRequiredService<IRequestHandler<DisplayAllCarsCommand, IEnumerable<CarListDto>>>();
+            var cmd = new DisplayAllCarsCommand();
+
+            var client = await new ClientBuilder(ctx)
+                .WithDefaults(name: "Jan", surname: "Kowalski", phoneNumber: "123456789")
+                .WithCar("Mazda", "MX-5", 2022, "VIN00000000000005")
+                .Build();
+
+            clientId = client.Id;
+            var car = client.Cars.First();
+            var carVin = car.VIN;
+
+            car.Delete(car.Id);
+            await ctx.SaveChangesAsync(CancellationToken);
+
+            car.ReverseDelete(car.Id);
+            await ctx.SaveChangesAsync(CancellationToken);
+
+            var resultAfterRestore = await handler.Handle(cmd, CancellationToken);
+            resultAfterRestore.ShouldContain(c => c.Vin == carVin && c.Make == "Mazda" && c.Model == "MX-5");
+        }
+        finally
+        {
+            if (clientId.HasValue)
+            {
+                using var scope = ServiceProvider.CreateScope();
+                var ctx = scope.ServiceProvider.GetRequiredService<ICarContext>();
+                await ctx.Clients.Where(x => x.Id == clientId.Value).ExecuteDeleteAsync(CancellationToken);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task Handle_Should_Not_Return_Deleted_Car_But_Return_Other_Cars_From_Same_Client()
+    {
+        int? clientId = null;
+
+        try
+        {
+            using var scope = ServiceProvider.CreateScope();
+            var sp = scope.ServiceProvider;
+            var ctx = sp.GetRequiredService<ICarContext>();
+            var handler = sp.GetRequiredService<IRequestHandler<DisplayAllCarsCommand, IEnumerable<CarListDto>>>();
+            var cmd = new DisplayAllCarsCommand();
+
+            var client = await new ClientBuilder(ctx)
+                .WithDefaults(name: "Anna", surname: "Nowak", phoneNumber: "987654321")
+                .WithCar("BMW", "X5", 2021, "VIN00000000000006")
+                .WithCar("BMW", "320i", 2020, "VIN00000000000007")
+                .WithCar("BMW", "M3", 2022, "VIN00000000000008")
+                .Build();
+
+            clientId = client.Id;
+
+            var carToDelete = client.Cars.FirstOrDefault(c => c.Model == "320i");
+            carToDelete!.Delete(carToDelete.Id);
+            await ctx.SaveChangesAsync(CancellationToken);
+
+            var result = await handler.Handle(cmd, CancellationToken);
+
+            var clientCars = result.Where(c => c.OwnerId == clientId.Value).ToList();
+            clientCars.Count.ShouldBe(2);
+            clientCars.ShouldContain(c => c.Model == "X5");
+            clientCars.ShouldContain(c => c.Model == "M3");
+            clientCars.ShouldNotContain(c => c.Model == "320i");
+        }
+        finally
+        {
+            if (clientId.HasValue)
+            {
+                using var scope = ServiceProvider.CreateScope();
+                var ctx = scope.ServiceProvider.GetRequiredService<ICarContext>();
+                await ctx.Clients.Where(x => x.Id == clientId.Value).ExecuteDeleteAsync(CancellationToken);
+            }
+        }
+    }
+
 }
