@@ -13,6 +13,8 @@ public class Client : AggregateRoot
         Name = name;
         Surname = surname;
         PhoneNumber = phoneNumber;
+        CreatedOn = DateTime.UtcNow;
+        ModifiedOn = DateTime.UtcNow;
     }
 
     protected Client()

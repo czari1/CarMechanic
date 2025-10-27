@@ -15,6 +15,8 @@ public class Car : EntityBase, ISoftDeleteTable
         VIN = vin; // z malych
         Visits = 0;
         IsDeleted = false;
+        CreatedOn = DateTime.UtcNow;
+        ModifiedOn = DateTime.UtcNow;
     }
 
     protected Car()

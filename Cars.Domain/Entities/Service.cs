@@ -13,6 +13,8 @@ public class Service : AggregateRoot
         ServiceDescription = serviceDescription;
         Price = price;
         ServiceDate = DateTime.UtcNow;
+        CreatedOn = DateTime.UtcNow;
+        ModifiedOn = DateTime.UtcNow;
     }
 
     protected Service()
@@ -53,7 +55,7 @@ public class Service : AggregateRoot
             ServiceDescription = newServiceDescription;
         }
 
-        if (newPrice >= 0)
+        if (newPrice >= 0.0m)
         {
             Price = newPrice;
         }
@@ -71,6 +73,6 @@ public class Service : AggregateRoot
             throw new ArgumentNullException("Service description cannot be null", nameof(serviceDescription));
         }
 
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price, nameof(price));
+        ArgumentOutOfRangeException.ThrowIfNegative(price, nameof(price));
     }
 }
