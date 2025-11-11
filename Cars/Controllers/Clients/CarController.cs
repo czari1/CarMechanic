@@ -8,7 +8,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cars.Controllers.Clients;
+namespace Cars.Controllers.Cars;
 
 [Route("/cars")]
 

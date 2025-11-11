@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Cars.Application.Services.DisplayAllServices;
 
-public sealed record DisplayAllServicesCommand()
-: IRequest<IEnumerable<ServiceListDto>>;
+public sealed record DisplayAllServicesQuery()
+: IRequest<IReadOnlyCollection<ServiceListDto>>;

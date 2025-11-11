@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 namespace Cars.Application.Services.DisplayAllServices;
 
 public sealed class DisplayAllServicesHandler(ICarContext context)
-    : IRequestHandler<DisplayAllServicesCommand, IEnumerable<ServiceListDto>>
+    : IRequestHandler<DisplayAllServicesQuery, IReadOnlyCollection<ServiceListDto>>
 {
-    public async Task<IEnumerable<ServiceListDto>> Handle(DisplayAllServicesCommand cmd, CancellationToken ct)
+    public async Task<IReadOnlyCollection<ServiceListDto>> Handle(DisplayAllServicesQuery cmd, CancellationToken ct)
     {
         var services = await context.Services
             .AsNoTracking()

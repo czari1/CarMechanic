@@ -37,7 +37,7 @@ public class ClientController : ControllerBase
     [HttpGet("clients")]
     public async Task<ActionResult<IReadOnlyCollection<ClientListDto>>> DisplayAllClients(int id, CancellationToken ct)
     {
-        var result = await _mediator.Send(new DisplayAllClientsCommand());
+        var result = await _mediator.Send(new DisplayAllClientsCommand(), ct);
 
         if (result == null)
         {

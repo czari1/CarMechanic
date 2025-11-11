@@ -24,7 +24,7 @@ public class ServiceController : ControllerBase
     [HttpGet("service/{id:int}")]
     public async Task<ActionResult<ServiceDto>> GetServiceById(int id, CancellationToken ct)
     {
-        var result = await _mediator.Send(new GetServiceByIdCommand(id));
+        var result = await _mediator.Send(new GetServiceByIdCommand(id), ct);
 
         if (result is null)
         {
@@ -37,7 +37,7 @@ public class ServiceController : ControllerBase
     [HttpGet("services")]
     public async Task<ActionResult<IReadOnlyCollection<ServiceListDto>>> DisplayAllService(CancellationToken ct)
     {
-        var result = await _mediator.Send(new DisplayAllServicesCommand());
+        var result = await _mediator.Send(new DisplayAllServicesQuery(), ct);
 
         if (result is null)
         {

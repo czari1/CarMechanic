@@ -7,6 +7,6 @@ public sealed record UpdateClientCommand(
     string NewName, // dodac ClientId
     string NewSurname,
     string NewPhoneNumber)
-: IRequest<int>;
+: IRequest;
 
 // Dodac pola od dodwania klienta
